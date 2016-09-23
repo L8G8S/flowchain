@@ -1,0 +1,283 @@
+@import 'flow-chain.less';
+
+/********** Directed Graph classes **********/
+
+@selection-color: #009933;
+
+fc-host {
+    .fc-host;
+}
+
+fc-element {
+    .fc-element;
+    
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 16px;
+    min-height: 16px;
+
+    width: 16px;
+    height: 16px;
+
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    
+    border-color: #457da8;
+    border-style: solid;
+    border-width: 2px;
+}
+
+fc-group {
+    .fc-group;
+    
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+       
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+/** Deletable **/
+
+.fc-element, 
+.fc-group {
+    &.deletable {
+        > .delete-button,
+        &::shadow .delete-button {
+            position : absolute;
+            width : 8px;
+            height : 8px;
+            
+            background-size: auto;
+            
+            top : -8px;
+            right : -8px;
+            
+            opacity: 1;
+            
+            -webkit-transition: opacity 0.3s ease;
+            -moz-transition: opacity 0.3s ease;
+            -ms-transition: opacity 0.3s ease;
+            -o-transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease;
+            
+            &:hover {
+                opacity: 1;
+                background-image: url('../images/icon-delete-red.png');
+            }
+        }
+        
+        &:focus {
+            > .delete-button,
+            &::shadow .delete-button {
+                opacity: 1;
+                background-image: url('../images/icon-delete-red.png');
+            }
+        }
+    }
+}
+
+/** Draggable **/
+
+.fc-host {
+    &[action='dragging'] * {
+       fc-group {
+           &:not(.root):not(.dragging) {
+               box-shadow: 0 0 4px 2px #ff6600;
+           }
+           
+           &.hit:not(.root) {
+               box-shadow: 0 0 4px 2px #00AD98;
+           }
+       }
+    }
+}
+
+.fc-element {
+    &.draggable {
+        > .drag-handle,
+        &::shadow .drag-handle {
+            width: 100%;
+            height: 100%;
+
+            margin: auto;
+            
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: auto;
+
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -o-border-radius: 50%;
+            border-radius: 50%;
+            
+            &:hover {
+                background-color: rgba(254, 254, 254, 0.7);
+            }
+        }
+        
+        &:hover {
+            background-color: #80B3FF;
+        }
+        
+        &.dragging {
+            background-color: #80B3FF;
+            box-shadow: 0 0 4px 2px #80B3FF;
+            
+            > .drag-handle,
+            &::shadow .drag-handle {
+                background-color: rgba(254, 254, 254, 0.7);
+            }
+        }
+    }
+}
+
+.fc-group {
+    &.draggable {
+        > .drag-handle,
+        &::shadow .drag-handle {
+            width: 100%;
+            height: 100%;
+            
+            display: block;
+            
+            margin: auto;
+            
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -o-border-radius: 4px;
+            border-radius: 4px;
+        }
+    }
+}
+
+/** Linkable **/
+
+.fc-host {
+    &[action='linking'] {
+        *, .drag-handle {
+            cursor: url('../images/icon-link.png') 12 12, default;
+        }
+                
+        fc-element {
+            &:not(.linking) {
+                box-shadow: 0 0 4px 2px #ff6600;
+            }
+            
+            &.already-linked {
+                box-shadow: none;
+            }
+        
+            &:hover:not(.linking):not(.already-linked),
+            &.linked:not(.linking):not(.already-linked) {
+                background-color: #fff;
+                box-shadow: 0 0 4px 2px #00AD98;
+                cursor: url('../images/icon-linked.png') 12 12, default;
+            }
+            
+            &.draggable {
+                .drag-handle, 
+                ::shadow .drag-handle {
+                    cursor: url('../images/icon-linked.png') 12 12, default;
+                }
+            }
+        }
+    }
+}
+
+.fc-element, 
+.fc-group {
+    &.linkable {
+        padding: 2px;
+        cursor: url('../images/icon-link.png') 0 12, default;
+            
+        &.linking {
+            background-color: #80B3FF;
+            box-shadow: 0 0 4px 2px #80B3FF;
+        }
+    }
+}
+
+.fc-group {
+    &.linkable {
+        padding: 8px;
+    }
+}
+
+/** Selection **/
+
+.fc-host {
+    > .selector,
+    &::shadow .selector {
+        border-color: @selection-color;
+        background-color: fadeout(@selection-color, 80%);
+    }
+}
+
+.fc-element, 
+.fc-group {
+    &.selected:not(.root) {
+        box-shadow: 0 0 8px 1px @selection-color;
+    }
+    
+    &:focus:not(.root) {
+        box-shadow: 0 0 8px 1px @selection-color;   
+    }
+}
+
+/** Runtime / Design **/
+
+.fc-host {
+    &:not([fc-mode='design']) {
+        fc-element,
+        fc-group {
+
+            &.deletable {
+                > .delete-button,
+                &::shadow .delete-button {
+                    display: none;
+                }
+            }
+    
+            &.draggable {
+                > .drag-handle,
+                &::shadow .drag-handle {
+                    display: none;
+                }
+            }
+            
+            &.linkable {
+                cursor: default;
+
+                > .delete-link,
+                &::shadow .delete-link {
+                    display: none;
+                }
+            }
+        }
+    }
+} 

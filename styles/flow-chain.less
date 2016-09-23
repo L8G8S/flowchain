@@ -1,0 +1,494 @@
+/********** Base classes and mixins **********/
+
+.fc-host {
+    position: relative;
+    border : 1px dashed #a0a0a0;
+    min-height: 100px;
+    min-width: 100px;
+
+    display: block;
+    overflow: auto;
+
+    background: #f0f0f0;
+            
+    cursor: default;
+            
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    &::shadow canvas {
+        position: absolute;
+        left:0;
+        top:0;
+
+        display: block;
+    }
+    
+    * {
+        -moz-box-sizing: border-box; 
+        -webkit-box-sizing: border-box; 
+        box-sizing: border-box;
+    }
+}
+
+.fc-element {
+    position: absolute;
+    border : 1px dashed #a0a0a0;
+    min-height: 32px;
+    min-width: 32px;
+
+    outline: none;
+
+    z-index: 1;
+
+    background: #fff;
+    
+    &:active, &:focus, &:hover {
+        z-index: 99999;    
+    }
+}
+
+.fc-group {
+    position: absolute;
+    border : 1px dashed #a0a0a0;
+    min-height: 64px;
+    min-width: 64px;
+
+    width: 64px;
+    height: 64px;
+    
+    outline: none;
+            
+    z-index: 0;
+    
+    &:hover:not(.root) {
+        z-index: 99999;
+    }
+}
+
+.fc-host {
+    .root {
+        position: absolute;
+        
+        display: inline-block;    
+        border-width: 0;
+        border-radius: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        
+        z-index: 0;
+        
+        outline: none;
+    }
+}
+
+/** Deletable **/
+
+.fc-element, 
+.fc-group {
+    &.deletable {
+        > .delete-button,
+        &::shadow .delete-button {
+            background-image: url('../images/icon-delete.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    }
+}
+
+/** Draggable **/
+
+.dragging {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.fc-host {
+    &[action='dragging'] * {
+        .dragging;
+    }
+}
+
+.fc-element, 
+.fc-group {
+    &.draggable {
+        will-change: top, left;
+        
+        > .drag-handle,
+        &::shadow .drag-handle {
+            cursor: move;
+            cursor: grab;
+            cursor: -moz-grab;
+            cursor: -webkit-grab;
+        }
+        
+        &.dragging, &:active {
+            .dragging;
+
+            z-index: 9999;
+            
+            > .drag-handle,
+            &::shadow .drag-handle {
+               .dragging;
+            }
+        }
+    }
+}
+
+/** Linkable **/
+
+.link-pointer {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    
+    border-radius: 50%;
+    
+    opacity: 0.1;
+    z-index:-1;
+    
+    will-change: top, left;
+}
+
+.fc-host {
+    &[action='linking'] {
+        *, .drag-handle{
+            cursor: default;   
+        }
+    }
+}
+
+.fc-element, 
+.fc-group {
+    &.linkable {
+        > .delete-link,
+        &::shadow .delete-link {
+            position: absolute;
+        
+            top:0;
+            left:0;
+            width: 10px;
+            height: 10px;
+            
+            background-image: url('../images/icon-delete.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: auto;
+            
+            opacity: 0.5;
+            
+            -webkit-transition: opacity 0.3s ease;
+            -moz-transition: opacity 0.3s ease;
+            -ms-transition: opacity 0.3s ease;
+            -o-transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease;
+            
+            cursor: url('../images/icon-trash.png') 4 4, default;
+            
+            will-change: top, left;
+            
+            &:hover
+            {
+                opacity: 1;
+                background-image: url('../images/icon-delete-red.png');
+            }
+        }
+        
+        &.linking {
+            
+        }
+    }
+}
+
+/** Sizable **/
+
+.north-cursor { cursor: n-resize; }
+.north-east-cursor { cursor: ne-resize; }
+.north-west-cursor { cursor: nw-resize; }
+.south-cursor { cursor: s-resize; }
+.south-east-cursor { cursor: se-resize; }
+.south-west-cursor { cursor: sw-resize; }
+.east-cursor { cursor: e-resize; }
+.west-cursor { cursor: w-resize; }
+
+.fc-host {
+    &[action='sizing n'] {
+        .north-cursor;
+        
+        .sizable.sizing {
+            .north-cursor;
+        }
+    }
+    
+    &[action="sizing ne"] {
+        .north-east-cursor;
+        
+        .sizable.sizing {
+            .north-east-cursor;
+        }
+    }
+    
+    &[action="sizing nw"] {
+        .north-west-cursor;
+        
+        .sizable.sizing {
+            .north-west-cursor;
+        }
+    }
+    
+    &[action="sizing s"] {
+        .south-cursor;
+        
+       .sizable.sizing {
+            .south-cursor;
+        }
+    }
+    
+    &[action="sizing se"] {
+        .south-east-cursor;
+        
+        .sizable.sizing {
+            .south-east-cursor;
+        }
+    }
+    
+    &[action="sizing sw"] {
+        .south-west-cursor;
+        
+        .sizable.sizing {
+            .south-west-cursor;
+        }
+    }
+    
+    &[action="sizing e"] {
+        .east-cursor;
+        
+        .sizable.sizing {
+            .east-cursor;
+        }
+    }
+    
+    &[action="sizing w"] {
+        .west-cursor;
+        
+        .sizable.sizing {
+            .west-cursor;
+        }
+    }
+}
+
+.fc-element, 
+.fc-group {
+    &.sizable {
+        will-change: width, height;
+        
+        > .size-handle,
+        &::shadow .size-handle {
+            position: absolute;
+            z-index: 9999;
+            
+            &.n {
+                .north-cursor;
+                
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 6px;
+            }
+            
+            &.ne {
+                .north-east-cursor;
+                
+                right: 0;
+                top: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.nw {
+                .north-west-cursor;
+                
+                left: 0;
+                top: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.s {
+                .south-cursor;
+                
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 6px;
+            }
+            
+            &.se {
+                .south-east-cursor;
+                
+                right: 0;
+                bottom: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.sw {
+                .south-west-cursor;
+                
+                left: 0;
+                bottom: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.e {
+                .east-cursor;
+                
+                right: 0;
+                top: 0;
+                width: 6px;
+                height: 100%;
+            }
+            
+            &.w {
+                .west-cursor;
+                
+                left: 0;
+                top: 0;
+                width: 6px;
+                height: 100%;
+            }
+        }
+    }
+}
+
+/** Storage **/
+
+.storage-bar
+{
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+    
+    display: inline-block;
+    min-width: 42px;
+    min-height: 42px;
+    
+    overflow: hidden;
+    
+    .storage-button {
+        position: relative;
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        
+        margin: 0.5em;
+
+        cursor: pointer;
+        opacity: 0.5;
+
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+
+        -webkit-transition: opacity 0.5s;
+        -moz-transition: opacity 0.5s;
+        -o-transition: opacity 0.5s;
+        transition: opacity 0.5s;
+        
+        overflow: hidden;
+        z-index: 9999;
+        
+        &:hover {
+            opacity: 1;
+        }
+        
+        &.download {
+            background-image: url('../images/icon-download.png');
+        }
+        
+        &.upload {
+            background-image: url('../images/icon-upload.png');
+            
+            input[type="file"] {
+                position: absolute;
+                top:100%;
+                left:100%;
+                
+                display: block;
+                width: 100%;
+                height: 100%;
+                
+                opacity: 0;
+                
+                cursor: pointer;
+            }
+        }
+        
+        &.load {
+            background-image: url('../images/icon-cloud-upload.png');
+            background-size: 110%;
+        }
+        
+        &.save {
+            background-image: url('../images/icon-cloud-download.png');
+            background-size: 110%;
+        }
+    }
+}
+
+.fc-host {
+    > .storage-bar,
+    &::shadow .storage-bar {
+        .storage-bar;
+    }
+}
+
+/** Selection **/
+
+.selector {
+    position: absolute;
+    display: none;
+    
+    opacity: 0;
+
+    min-width: 2px;
+    min-height: 2px;
+    
+    border: 1px solid #457da8;
+    
+    pointer-events: none;
+
+    transition-delay: 2s;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+    
+    will-change: width, height;
+}
+
+.fc-host {
+    > .selector,
+    &::shadow .selector {
+        .selector;
+    }
+    
+    &[action="selecting"]::shadow .selector {
+        display: block;
+        opacity: 1;
+    }
+}
+
+.fc-element, 
+.fc-group {
+    &.selected {
+        
+    }
+}

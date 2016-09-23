@@ -1,0 +1,531 @@
+/********** Base classes and mixins **********/
+
+@window-background-color: #ffffff;
+@window-border-color: #d0d0d0;
+@window-shadow-color: #d0d0d0;
+
+@directory-selected-color: #007acc;
+@file-selected-color: #007acc;
+
+@button-border-color: #d0d0d0;
+@button-border-color-focus: rgb(30,87,153);
+
+.rf-window {
+    position: absolute;
+    opacity: 0;    
+    
+    border : 1px solid @window-border-color;
+    min-width: 340px;
+    min-height: 200px;
+
+    background-color: @window-background-color;
+
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    display: flex;
+    flex-direction: column;
+            
+    cursor: default;
+        
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    -webkit-box-shadow: 0 0 10px 2px @window-shadow-color;
+    -moz-box-shadow: 0 0 10px 2px @window-shadow-color;
+    box-shadow: 0 0 10px 2px @window-shadow-color;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;  
+    box-sizing: border-box;
+    
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;  
+        box-sizing: border-box;
+    }
+    
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+
+    &.shown {
+        opacity: 1;
+        z-index: 9999;
+    }
+    
+    &.draggable {
+        will-change: top, left;
+    }
+    
+    &.dragging {
+        
+    }
+    
+    &.sizable, .sizable {
+        will-change: width, height;
+        
+        &::shadow .size-handle {
+            position: absolute;
+            z-index: 9999;
+            
+            &.n {
+                cursor: n-resize;
+                
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 6px;
+            }
+        
+            &.ne {
+                cursor: ne-resize;
+                
+                right: 0;
+                top: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.nw {
+                cursor: nw-resize;
+                
+                left: 0;
+                top: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.s {
+                cursor: s-resize;
+                
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 6px;
+            }
+            
+            &.se {
+                cursor: se-resize;
+                
+                right: 0;
+                bottom: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.sw {
+                cursor: sw-resize;
+                
+                left: 0;
+                bottom: 0;
+                width: 6px;
+                height: 6px;
+            }
+            
+            &.e {
+                cursor: e-resize;
+                
+                right: 0;
+                top: 0;
+                width: 6px;
+                height: 100%;
+            }
+            
+            &.w {
+                cursor: w-resize;
+                
+                left: 0;
+                top: 0;
+                width: 6px;
+                height: 100%;
+            }
+            
+            &.ew {
+                cursor: col-resize;
+                
+                right: 0;
+                top: 0;
+                width: 6px;
+                height: 100%;
+            }
+        }
+    }
+}
+
+body.sizing {
+    &.n {
+        cursor: n-resize;
+        
+        * {
+            cursor: n-resize;
+        }
+    }
+
+    &.ne {
+        cursor: ne-resize;
+        * {
+            cursor: ne-resize;
+        }
+    }
+    
+    &.nw {
+        cursor: nw-resize;
+        * {
+            cursor: nw-resize;
+        }
+    }
+    
+    &.s {
+        cursor: s-resize;
+        * {
+            cursor: s-resize;
+        }
+    }
+    
+    &.se {
+        cursor: se-resize;
+        * {
+            cursor: se-resize;
+        }
+    }
+    
+    &.sw {
+        cursor: sw-resize;
+        * {
+            cursor: sw-resize;
+        }
+    }
+    
+    &.e {
+        cursor: e-resize;
+        * {
+            cursor: e-resize;
+        }
+    }
+    
+    &.w {
+        cursor: w-resize;
+        * {
+            cursor: w-resize;
+        }
+    }
+    
+    &.ew {
+        cursor: col-resize;
+        * {
+            cursor: col-resize;
+        }
+    }
+}
+
+.rf-window-titlebar {
+    display: block;
+    min-height: 24px;
+    padding: 4px 6px;
+    
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    
+    background: rgb(240,240,240); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(240,240,240,1) 0%, rgba(219,219,219,1) 39%, rgba(209,209,209,1) 42%, rgba(240,240,240,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(240,240,240,1) 0%,rgba(219,219,219,1) 39%,rgba(209,209,209,1) 42%,rgba(240,240,240,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(240,240,240,1) 0%,rgba(219,219,219,1) 39%,rgba(209,209,209,1) 42%,rgba(240,240,240,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        
+    border-bottom: 1px solid @window-border-color;
+    
+    &::shadow {
+        .close-button {
+            position: absolute;
+            right:1px;
+            top:1px;
+            
+            width: 24px;
+            height: 24px;
+            
+            background-image: url('../images/icon-delete.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 70%;
+            
+            opacity: 0.7;
+            
+            -webkit-transition: opacity 0.5s;
+            -moz-transition: opacity 0.5s;
+            -o-transition: opacity 0.5s;
+            transition: opacity 0.5s;
+            
+            &:hover {
+                background-image: url('../images/icon-delete-red.png');
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.rf-window-content {
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    
+    flex-grow: 1;
+}
+
+.rf-directory-list {
+    position: relative;
+    
+    display: block;
+    width: 160px;
+    padding: 0.5rem;
+    
+    border-right: 2px solid #f0f0f0;
+    
+    overflow: auto;
+    
+    .directory {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+        width: 100%;
+
+        > * {
+           vertical-align: top;
+        }
+        
+        outline: none;
+                
+        &:before {
+            content:'';
+            
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 0.3rem;
+            
+            background-image: url('../images/icon-folder.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            
+            opacity: 0.5;
+        }
+        
+        &.selected {
+            color: @directory-selected-color;
+                        
+            &:before {
+                background-image: url('../images/icon-folder-opened.png');
+                opacity: 1;
+            }
+        }
+        
+        &:focus {
+            text-decoration: underline;
+            
+            &:before {
+                opacity: 1;
+            }   
+        }
+    }
+    
+    ul {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        
+        display: inline-block;
+                
+        list-style: none;
+        list-style-position: inside;
+
+        overflow: visible;
+            
+        li {
+            display: inline-block;
+            width: 100%;
+            padding-left: 1em;
+        }
+    }
+}
+
+.rf-file-list {
+    display: block;
+    flex-grow: 1;
+    
+    padding: 0.5rem;
+    
+    overflow: auto;
+    
+    .file {
+        position: relative;
+        white-space: nowrap;
+                   
+        > * {
+           vertical-align: top;
+        }
+        
+        outline: none;
+               
+        &:before {
+            content:'';
+            
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 0.3rem;
+            
+            background-image: url('../images/icon-file.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            
+            opacity: 0.5;
+        }
+        
+        &.selected {
+            color: @file-selected-color;
+                     
+            &:before {
+                opacity: 1;
+            }
+        }
+        
+        &:focus {
+            text-decoration: underline;
+            
+            &:before {
+                opacity: 1;
+            }   
+        }
+    }
+    
+    ul {
+        position: relative;
+        margin: 0;
+        padding: 0;
+                
+        list-style: none;
+        list-style-position: inside;
+
+        overflow: visible;
+            
+        li {
+            padding: 0;
+        }
+    }
+}
+
+.rf-window-statusbar {
+    display: block;
+    min-height: 24px;
+    padding: 12px;
+    
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+    
+    background-color: #f0f0f0;
+    
+    text-align: right;
+    
+    button {
+        display: inline-block;
+        
+        border: 1px solid @button-border-color;
+        width: 80px;
+        height: 24px;
+        
+        margin-left: 4px;
+        margin-right: 4px;
+        
+        background: rgb(240,240,240); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(240,240,240,1) 0%, rgba(219,219,219,1) 39%, rgba(209,209,209,1) 42%, rgba(240,240,240,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(240,240,240,1) 0%,rgba(219,219,219,1) 39%,rgba(209,209,209,1) 42%,rgba(240,240,240,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(240,240,240,1) 0%,rgba(219,219,219,1) 39%,rgba(209,209,209,1) 42%,rgba(240,240,240,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        
+        outline: none;
+        
+        cursor: pointer;
+        
+        &:focus {
+            border-color: @button-border-color-focus;
+        }
+        
+        &:hover {
+            background: rgb(220,220,220); /* Old browsers */
+            background: -moz-linear-gradient(top, rgba(240,240,240,1) 0%, rgba(229,229,229,1) 39%, rgba(219,219,219,1) 42%, rgba(240,240,240,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, rgba(240,240,240,1) 0%,rgba(229,229,229,1) 39%,rgba(219,219,219,1) 42%,rgba(240,240,240,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, rgba(240,240,240,1) 0%,rgba(229,229,229,1) 39%,rgba(219,219,219,1) 42%,rgba(240,240,240,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        }
+        
+        &.default {
+            border-color: @button-border-color-focus;
+            
+            color: #f0f0f0;
+            text-shadow: 1px 1px 2px rgb(30,87,153);
+            
+            background: rgb(30,87,153); /* Old browsers */
+            background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        
+            &:hover {
+                background: rgb(208,228,247); /* Old browsers */
+                background: -moz-linear-gradient(top, rgba(115,177,231,1) 0%, rgba(10,119,213,1) 50%, rgba(83,159,225,1) 79%, rgba(135,188,234,1) 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top, rgba(115,177,231,1) 0%, rgba(10,119,213,1) 50%,rgba(83,159,225,1) 79%,rgba(135,188,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom, rgba(115,177,231,1) 0%, rgba(10,119,213,1) 50%,rgba(83,159,225,1) 79%,rgba(135,188,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            }
+        }
+    }
+}
+
+rf-window {
+    .rf-window;
+    
+    left:-999px;
+    top:-999px;
+    
+    &.shown.draggable {
+        rf-window-titlebar {
+            cursor: move;
+            
+            &::shadow {
+                .close-button {
+                    cursor: pointer;
+                } 
+            }
+        }
+    }
+}
+
+rf-window-titlebar {
+    .rf-window-titlebar;
+}
+
+rf-window-content {
+    .rf-window-content;
+}
+
+rf-directory-list {
+    .rf-directory-list;
+}
+
+rf-file-list {
+    .rf-file-list;
+}
+
+rf-window-statusbar {
+    .rf-window-statusbar;
+}

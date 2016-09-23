@@ -1,0 +1,24 @@
+body {
+  overflow: hidden;
+}
+body > button {
+  padding: 1em;
+  margin: auto;
+  display: block;
+}
+body > .container {
+  margin: 2em;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+}
+body #host {
+  width: 90%;
+}
+body #pgrid {
+  flex-grow: 1;
+  border-left: none;
+  width: 500px;
+}
+
+/*# sourceMappingURL=maps/etl.html.css.map */

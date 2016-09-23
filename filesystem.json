@@ -1,0 +1,81 @@
+{
+  "name": "flow-chain",
+  "type": "directory",
+  "files": [
+    {
+      "name": "etl.html",
+      "type": "file"
+    },
+    {
+      "name": "filesystem.json",
+      "type": "file"
+    },
+    {
+      "name": "graph.html",
+      "type": "file"
+    },
+    {
+      "name": "gulpfile.js",
+      "type": "file"
+    },
+    {
+      "name": "package.json",
+      "type": "file"
+    },
+    {
+      "name": "remote_finder.html",
+      "type": "file"
+    },
+    {
+      "name": "url.txt",
+      "type": "file"
+    }
+  ],
+  "directories" :[{
+      "name": "data",
+      "type": "directory",
+      "files": [{
+        "name": "etl.json",
+        "type": "file"
+      },
+      {
+        "name": "graph.json",
+        "type": "file"
+      }]
+    },
+    {
+      "name": "images",
+      "type": "directory",
+      "files": [{
+        "name":"icon-cloud-download.png",
+        "type": "file"
+      },
+      {
+        "name":"icon-cloud-upload.png",
+        "type": "file"
+      }]
+    },
+    {
+      "name": "node_modules",
+      "type": "directory",
+      "files": []
+    },
+    {
+      "name": "scripts",
+      "type": "directory",
+      "files": [{
+        "name":"Geometry.es6.js",
+        "type": "file"
+      },
+      {
+        "name":"RemoteFinderWindow.es6.js",
+        "type": "file"
+      }]
+    },
+    {
+      "name": "styles",
+      "type": "directory",
+      "files": []
+    }
+  ]
+}

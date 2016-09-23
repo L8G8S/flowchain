@@ -1,0 +1,483 @@
+/********** Base classes and mixins **********/
+.fc-host {
+  position: relative;
+  border: 1px dashed #a0a0a0;
+  min-height: 100px;
+  min-width: 100px;
+  display: block;
+  overflow: auto;
+  background: #f0f0f0;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.fc-host::shadow canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.fc-host * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.fc-element {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+}
+.fc-element:active,
+.fc-element:focus,
+.fc-element:hover {
+  z-index: 99999;
+}
+.fc-group {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 64px;
+  min-width: 64px;
+  width: 64px;
+  height: 64px;
+  outline: none;
+  z-index: 0;
+}
+.fc-group:hover:not(.root) {
+  z-index: 99999;
+}
+.fc-host .root {
+  position: absolute;
+  display: inline-block;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  outline: none;
+}
+/** Deletable **/
+.fc-element.deletable > .delete-button,
+.fc-group.deletable > .delete-button,
+.fc-element.deletable::shadow .delete-button,
+.fc-group.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+/** Draggable **/
+.dragging {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+.fc-host[action='dragging'] * {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+.fc-element.draggable,
+.fc-group.draggable {
+  will-change: top, left;
+}
+.fc-element.draggable > .drag-handle,
+.fc-group.draggable > .drag-handle,
+.fc-element.draggable::shadow .drag-handle,
+.fc-group.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.fc-element.draggable.dragging,
+.fc-group.draggable.dragging,
+.fc-element.draggable:active,
+.fc-group.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+.fc-element.draggable.dragging > .drag-handle,
+.fc-group.draggable.dragging > .drag-handle,
+.fc-element.draggable:active > .drag-handle,
+.fc-group.draggable:active > .drag-handle,
+.fc-element.draggable.dragging::shadow .drag-handle,
+.fc-group.draggable.dragging::shadow .drag-handle,
+.fc-element.draggable:active::shadow .drag-handle,
+.fc-group.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+/** Linkable **/
+.link-pointer {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.1;
+  z-index: -1;
+  will-change: top, left;
+}
+.fc-host[action='linking'] *,
+.fc-host[action='linking'] .drag-handle {
+  cursor: default;
+}
+.fc-element.linkable > .delete-link,
+.fc-group.linkable > .delete-link,
+.fc-element.linkable::shadow .delete-link,
+.fc-group.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+.fc-element.linkable > .delete-link:hover,
+.fc-group.linkable > .delete-link:hover,
+.fc-element.linkable::shadow .delete-link:hover,
+.fc-group.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+/** Sizable **/
+.north-cursor {
+  cursor: n-resize;
+}
+.north-east-cursor {
+  cursor: ne-resize;
+}
+.north-west-cursor {
+  cursor: nw-resize;
+}
+.south-cursor {
+  cursor: s-resize;
+}
+.south-east-cursor {
+  cursor: se-resize;
+}
+.south-west-cursor {
+  cursor: sw-resize;
+}
+.east-cursor {
+  cursor: e-resize;
+}
+.west-cursor {
+  cursor: w-resize;
+}
+.fc-host[action='sizing n'] {
+  cursor: n-resize;
+}
+.fc-host[action='sizing n'] .sizable.sizing {
+  cursor: n-resize;
+}
+.fc-host[action="sizing ne"] {
+  cursor: ne-resize;
+}
+.fc-host[action="sizing ne"] .sizable.sizing {
+  cursor: ne-resize;
+}
+.fc-host[action="sizing nw"] {
+  cursor: nw-resize;
+}
+.fc-host[action="sizing nw"] .sizable.sizing {
+  cursor: nw-resize;
+}
+.fc-host[action="sizing s"] {
+  cursor: s-resize;
+}
+.fc-host[action="sizing s"] .sizable.sizing {
+  cursor: s-resize;
+}
+.fc-host[action="sizing se"] {
+  cursor: se-resize;
+}
+.fc-host[action="sizing se"] .sizable.sizing {
+  cursor: se-resize;
+}
+.fc-host[action="sizing sw"] {
+  cursor: sw-resize;
+}
+.fc-host[action="sizing sw"] .sizable.sizing {
+  cursor: sw-resize;
+}
+.fc-host[action="sizing e"] {
+  cursor: e-resize;
+}
+.fc-host[action="sizing e"] .sizable.sizing {
+  cursor: e-resize;
+}
+.fc-host[action="sizing w"] {
+  cursor: w-resize;
+}
+.fc-host[action="sizing w"] .sizable.sizing {
+  cursor: w-resize;
+}
+.fc-element.sizable,
+.fc-group.sizable {
+  will-change: width, height;
+}
+.fc-element.sizable > .size-handle,
+.fc-group.sizable > .size-handle,
+.fc-element.sizable::shadow .size-handle,
+.fc-group.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+.fc-element.sizable > .size-handle.n,
+.fc-group.sizable > .size-handle.n,
+.fc-element.sizable::shadow .size-handle.n,
+.fc-group.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.ne,
+.fc-group.sizable > .size-handle.ne,
+.fc-element.sizable::shadow .size-handle.ne,
+.fc-group.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.nw,
+.fc-group.sizable > .size-handle.nw,
+.fc-element.sizable::shadow .size-handle.nw,
+.fc-group.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.s,
+.fc-group.sizable > .size-handle.s,
+.fc-element.sizable::shadow .size-handle.s,
+.fc-group.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.se,
+.fc-group.sizable > .size-handle.se,
+.fc-element.sizable::shadow .size-handle.se,
+.fc-group.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.sw,
+.fc-group.sizable > .size-handle.sw,
+.fc-element.sizable::shadow .size-handle.sw,
+.fc-group.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.e,
+.fc-group.sizable > .size-handle.e,
+.fc-element.sizable::shadow .size-handle.e,
+.fc-group.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+.fc-element.sizable > .size-handle.w,
+.fc-group.sizable > .size-handle.w,
+.fc-element.sizable::shadow .size-handle.w,
+.fc-group.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+/** Storage **/
+.storage-bar {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  display: inline-block;
+  min-width: 42px;
+  min-height: 42px;
+  overflow: hidden;
+}
+.storage-bar .storage-button {
+  position: relative;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0.5em;
+  cursor: pointer;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  overflow: hidden;
+  z-index: 9999;
+}
+.storage-bar .storage-button:hover {
+  opacity: 1;
+}
+.storage-bar .storage-button.download {
+  background-image: url('../images/icon-download.png');
+}
+.storage-bar .storage-button.upload {
+  background-image: url('../images/icon-upload.png');
+}
+.storage-bar .storage-button.upload input[type="file"] {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.storage-bar .storage-button.load {
+  background-image: url('../images/icon-cloud-upload.png');
+  background-size: 110%;
+}
+.storage-bar .storage-button.save {
+  background-image: url('../images/icon-cloud-download.png');
+  background-size: 110%;
+}
+.fc-host > .storage-bar,
+.fc-host::shadow .storage-bar {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  display: inline-block;
+  min-width: 42px;
+  min-height: 42px;
+  overflow: hidden;
+}
+.fc-host > .storage-bar .storage-button,
+.fc-host::shadow .storage-bar .storage-button {
+  position: relative;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0.5em;
+  cursor: pointer;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  overflow: hidden;
+  z-index: 9999;
+}
+.fc-host > .storage-bar .storage-button:hover,
+.fc-host::shadow .storage-bar .storage-button:hover {
+  opacity: 1;
+}
+.fc-host > .storage-bar .storage-button.download,
+.fc-host::shadow .storage-bar .storage-button.download {
+  background-image: url('../images/icon-download.png');
+}
+.fc-host > .storage-bar .storage-button.upload,
+.fc-host::shadow .storage-bar .storage-button.upload {
+  background-image: url('../images/icon-upload.png');
+}
+.fc-host > .storage-bar .storage-button.upload input[type="file"],
+.fc-host::shadow .storage-bar .storage-button.upload input[type="file"] {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.fc-host > .storage-bar .storage-button.load,
+.fc-host::shadow .storage-bar .storage-button.load {
+  background-image: url('../images/icon-cloud-upload.png');
+  background-size: 110%;
+}
+.fc-host > .storage-bar .storage-button.save,
+.fc-host::shadow .storage-bar .storage-button.save {
+  background-image: url('../images/icon-cloud-download.png');
+  background-size: 110%;
+}
+/** Selection **/
+.selector {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  min-width: 2px;
+  min-height: 2px;
+  border: 1px solid #457da8;
+  pointer-events: none;
+  transition-delay: 2s;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  will-change: width, height;
+}
+.fc-host > .selector,
+.fc-host::shadow .selector {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  min-width: 2px;
+  min-height: 2px;
+  border: 1px solid #457da8;
+  pointer-events: none;
+  transition-delay: 2s;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  will-change: width, height;
+}
+.fc-host[action="selecting"]::shadow .selector {
+  display: block;
+  opacity: 1;
+}
+
+/*# sourceMappingURL=maps/flow-chain.css.map */

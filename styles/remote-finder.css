@@ -1,0 +1,745 @@
+/********** Base classes and mixins **********/
+.rf-window {
+  position: absolute;
+  opacity: 0;
+  border: 1px solid #d0d0d0;
+  min-width: 340px;
+  min-height: 200px;
+  background-color: #ffffff;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 10px 2px #d0d0d0;
+  -moz-box-shadow: 0 0 10px 2px #d0d0d0;
+  box-shadow: 0 0 10px 2px #d0d0d0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.rf-window * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.rf-window.shown {
+  opacity: 1;
+  z-index: 9999;
+}
+.rf-window.draggable {
+  will-change: top, left;
+}
+.rf-window.sizable,
+.rf-window .sizable {
+  will-change: width, height;
+}
+.rf-window.sizable::shadow .size-handle,
+.rf-window .sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+.rf-window.sizable::shadow .size-handle.n,
+.rf-window .sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+.rf-window.sizable::shadow .size-handle.ne,
+.rf-window .sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+.rf-window.sizable::shadow .size-handle.nw,
+.rf-window .sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+.rf-window.sizable::shadow .size-handle.s,
+.rf-window .sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+.rf-window.sizable::shadow .size-handle.se,
+.rf-window .sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+.rf-window.sizable::shadow .size-handle.sw,
+.rf-window .sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+.rf-window.sizable::shadow .size-handle.e,
+.rf-window .sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+.rf-window.sizable::shadow .size-handle.w,
+.rf-window .sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+.rf-window.sizable::shadow .size-handle.ew,
+.rf-window .sizable::shadow .size-handle.ew {
+  cursor: col-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+body.sizing.n {
+  cursor: n-resize;
+}
+body.sizing.n * {
+  cursor: n-resize;
+}
+body.sizing.ne {
+  cursor: ne-resize;
+}
+body.sizing.ne * {
+  cursor: ne-resize;
+}
+body.sizing.nw {
+  cursor: nw-resize;
+}
+body.sizing.nw * {
+  cursor: nw-resize;
+}
+body.sizing.s {
+  cursor: s-resize;
+}
+body.sizing.s * {
+  cursor: s-resize;
+}
+body.sizing.se {
+  cursor: se-resize;
+}
+body.sizing.se * {
+  cursor: se-resize;
+}
+body.sizing.sw {
+  cursor: sw-resize;
+}
+body.sizing.sw * {
+  cursor: sw-resize;
+}
+body.sizing.e {
+  cursor: e-resize;
+}
+body.sizing.e * {
+  cursor: e-resize;
+}
+body.sizing.w {
+  cursor: w-resize;
+}
+body.sizing.w * {
+  cursor: w-resize;
+}
+body.sizing.ew {
+  cursor: col-resize;
+}
+body.sizing.ew * {
+  cursor: col-resize;
+}
+.rf-window-titlebar {
+  display: block;
+  min-height: 24px;
+  padding: 4px 6px;
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+  background: #f0f0f0;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border-bottom: 1px solid #d0d0d0;
+}
+.rf-window-titlebar::shadow .close-button {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 24px;
+  height: 24px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  opacity: 0.7;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.rf-window-titlebar::shadow .close-button:hover {
+  background-image: url('../images/icon-delete-red.png');
+  opacity: 1;
+}
+.rf-window-content {
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+.rf-directory-list {
+  position: relative;
+  display: block;
+  width: 160px;
+  padding: 0.5rem;
+  border-right: 2px solid #f0f0f0;
+  overflow: auto;
+}
+.rf-directory-list .directory {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  outline: none;
+}
+.rf-directory-list .directory > * {
+  vertical-align: top;
+}
+.rf-directory-list .directory:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 0.3rem;
+  background-image: url('../images/icon-folder.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.5;
+}
+.rf-directory-list .directory.selected {
+  color: #007acc;
+}
+.rf-directory-list .directory.selected:before {
+  background-image: url('../images/icon-folder-opened.png');
+  opacity: 1;
+}
+.rf-directory-list .directory:focus {
+  text-decoration: underline;
+}
+.rf-directory-list .directory:focus:before {
+  opacity: 1;
+}
+.rf-directory-list ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+  list-style-position: inside;
+  overflow: visible;
+}
+.rf-directory-list ul li {
+  display: inline-block;
+  width: 100%;
+  padding-left: 1em;
+}
+.rf-file-list {
+  display: block;
+  flex-grow: 1;
+  padding: 0.5rem;
+  overflow: auto;
+}
+.rf-file-list .file {
+  position: relative;
+  white-space: nowrap;
+  outline: none;
+}
+.rf-file-list .file > * {
+  vertical-align: top;
+}
+.rf-file-list .file:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 0.3rem;
+  background-image: url('../images/icon-file.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.5;
+}
+.rf-file-list .file.selected {
+  color: #007acc;
+}
+.rf-file-list .file.selected:before {
+  opacity: 1;
+}
+.rf-file-list .file:focus {
+  text-decoration: underline;
+}
+.rf-file-list .file:focus:before {
+  opacity: 1;
+}
+.rf-file-list ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-position: inside;
+  overflow: visible;
+}
+.rf-file-list ul li {
+  padding: 0;
+}
+.rf-window-statusbar {
+  display: block;
+  min-height: 24px;
+  padding: 12px;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  background-color: #f0f0f0;
+  text-align: right;
+}
+.rf-window-statusbar button {
+  display: inline-block;
+  border: 1px solid #d0d0d0;
+  width: 80px;
+  height: 24px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background: #f0f0f0;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.rf-window-statusbar button:focus {
+  border-color: #1e5799;
+}
+.rf-window-statusbar button:hover {
+  background: #dcdcdc;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f0f0f0 0%, #e5e5e5 39%, #dbdbdb 42%, #f0f0f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f0f0f0 0%, #e5e5e5 39%, #dbdbdb 42%, #f0f0f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f0f0f0 0%, #e5e5e5 39%, #dbdbdb 42%, #f0f0f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+.rf-window-statusbar button.default {
+  border-color: #1e5799;
+  color: #f0f0f0;
+  text-shadow: 1px 1px 2px #1e5799;
+  background: #1e5799;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+.rf-window-statusbar button.default:hover {
+  background: #d0e4f7;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #73b1e7 0%, #0a77d5 50%, #539fe1 79%, #87bcea 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #73b1e7 0%, #0a77d5 50%, #539fe1 79%, #87bcea 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #73b1e7 0%, #0a77d5 50%, #539fe1 79%, #87bcea 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+rf-window {
+  position: absolute;
+  opacity: 0;
+  border: 1px solid #d0d0d0;
+  min-width: 340px;
+  min-height: 200px;
+  background-color: #ffffff;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 10px 2px #d0d0d0;
+  -moz-box-shadow: 0 0 10px 2px #d0d0d0;
+  box-shadow: 0 0 10px 2px #d0d0d0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  left: -999px;
+  top: -999px;
+}
+rf-window * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+rf-window.shown {
+  opacity: 1;
+  z-index: 9999;
+}
+rf-window.draggable {
+  will-change: top, left;
+}
+rf-window.sizable,
+rf-window .sizable {
+  will-change: width, height;
+}
+rf-window.sizable::shadow .size-handle,
+rf-window .sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+rf-window.sizable::shadow .size-handle.n,
+rf-window .sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+rf-window.sizable::shadow .size-handle.ne,
+rf-window .sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+rf-window.sizable::shadow .size-handle.nw,
+rf-window .sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+rf-window.sizable::shadow .size-handle.s,
+rf-window .sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+rf-window.sizable::shadow .size-handle.se,
+rf-window .sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+rf-window.sizable::shadow .size-handle.sw,
+rf-window .sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+rf-window.sizable::shadow .size-handle.e,
+rf-window .sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+rf-window.sizable::shadow .size-handle.w,
+rf-window .sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+rf-window.sizable::shadow .size-handle.ew,
+rf-window .sizable::shadow .size-handle.ew {
+  cursor: col-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+rf-window.shown.draggable rf-window-titlebar {
+  cursor: move;
+}
+rf-window.shown.draggable rf-window-titlebar::shadow .close-button {
+  cursor: pointer;
+}
+rf-window-titlebar {
+  display: block;
+  min-height: 24px;
+  padding: 4px 6px;
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+  background: #f0f0f0;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border-bottom: 1px solid #d0d0d0;
+}
+rf-window-titlebar::shadow .close-button {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 24px;
+  height: 24px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  opacity: 0.7;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+rf-window-titlebar::shadow .close-button:hover {
+  background-image: url('../images/icon-delete-red.png');
+  opacity: 1;
+}
+rf-window-content {
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+rf-directory-list {
+  position: relative;
+  display: block;
+  width: 160px;
+  padding: 0.5rem;
+  border-right: 2px solid #f0f0f0;
+  overflow: auto;
+}
+rf-directory-list .directory {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  outline: none;
+}
+rf-directory-list .directory > * {
+  vertical-align: top;
+}
+rf-directory-list .directory:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 0.3rem;
+  background-image: url('../images/icon-folder.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.5;
+}
+rf-directory-list .directory.selected {
+  color: #007acc;
+}
+rf-directory-list .directory.selected:before {
+  background-image: url('../images/icon-folder-opened.png');
+  opacity: 1;
+}
+rf-directory-list .directory:focus {
+  text-decoration: underline;
+}
+rf-directory-list .directory:focus:before {
+  opacity: 1;
+}
+rf-directory-list ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+  list-style-position: inside;
+  overflow: visible;
+}
+rf-directory-list ul li {
+  display: inline-block;
+  width: 100%;
+  padding-left: 1em;
+}
+rf-file-list {
+  display: block;
+  flex-grow: 1;
+  padding: 0.5rem;
+  overflow: auto;
+}
+rf-file-list .file {
+  position: relative;
+  white-space: nowrap;
+  outline: none;
+}
+rf-file-list .file > * {
+  vertical-align: top;
+}
+rf-file-list .file:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 0.3rem;
+  background-image: url('../images/icon-file.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.5;
+}
+rf-file-list .file.selected {
+  color: #007acc;
+}
+rf-file-list .file.selected:before {
+  opacity: 1;
+}
+rf-file-list .file:focus {
+  text-decoration: underline;
+}
+rf-file-list .file:focus:before {
+  opacity: 1;
+}
+rf-file-list ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-position: inside;
+  overflow: visible;
+}
+rf-file-list ul li {
+  padding: 0;
+}
+rf-window-statusbar {
+  display: block;
+  min-height: 24px;
+  padding: 12px;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  background-color: #f0f0f0;
+  text-align: right;
+}
+rf-window-statusbar button {
+  display: inline-block;
+  border: 1px solid #d0d0d0;
+  width: 80px;
+  height: 24px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background: #f0f0f0;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f0f0f0 0%, #dbdbdb 39%, #d1d1d1 42%, #f0f0f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+rf-window-statusbar button:focus {
+  border-color: #1e5799;
+}
+rf-window-statusbar button:hover {
+  background: #dcdcdc;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f0f0f0 0%, #e5e5e5 39%, #dbdbdb 42%, #f0f0f0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f0f0f0 0%, #e5e5e5 39%, #dbdbdb 42%, #f0f0f0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f0f0f0 0%, #e5e5e5 39%, #dbdbdb 42%, #f0f0f0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+rf-window-statusbar button.default {
+  border-color: #1e5799;
+  color: #f0f0f0;
+  text-shadow: 1px 1px 2px #1e5799;
+  background: #1e5799;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+rf-window-statusbar button.default:hover {
+  background: #d0e4f7;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #73b1e7 0%, #0a77d5 50%, #539fe1 79%, #87bcea 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #73b1e7 0%, #0a77d5 50%, #539fe1 79%, #87bcea 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #73b1e7 0%, #0a77d5 50%, #539fe1 79%, #87bcea 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+/*# sourceMappingURL=maps/remote-finder.css.map */

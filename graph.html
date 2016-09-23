@@ -1,0 +1,82 @@
+<html>
+<head>
+    <link rel="stylesheet" href="styles/flow-chain-graph.css" />
+
+    <script src="scripts/Geometry.es6.js"></script>
+    <script src="scripts/FlowChainElement.es6.js"></script>
+    <script src="scripts/FlowChainGroup.es6.js"></script>
+    <script src="scripts/FlowChainHostManager.es6.js"></script>
+    <script src="scripts/FlowChainHostElementLifecycleManager.es6.js"></script>
+    <script src="scripts/FlowChainHostDraggableManager.es6.js"></script>
+    <script src="scripts/FlowChainHostLinkableManager.es6.js"></script>
+    <script src="scripts/FlowChainHostSizableManager.es6.js"></script>
+    <script src="scripts/FlowChainHostSelectionManager.es6.js"></script>
+    <script src="scripts/FlowChainHostInteractionManager.es6.js"></script>
+    <script src="scripts/FlowChainHostLinkRenderer.es6.js"></script>
+    <script src="scripts/FlowChainHostLayoutManager.es6.js"></script>
+    <script src="scripts/FlowChainElementBuilder.es6.js"></script>
+    <script src="scripts/FlowChainHostStorageManager.es6.js"></script>
+    <script src="scripts/DirectedGraphElementBuilder.es6.js"></script>
+    <script src="scripts/DirectedGraphElementLifecycleManager.es6.js"></script>
+    <script src="scripts/DirectedGraphInteractionManager.es6.js"></script>
+    <script src="scripts/FlowChainHostElement.es6.js"></script>
+    
+    <link rel="stylesheet" href="styles/remote-finder.css" />
+    
+    <script src="scripts/Ajax.es6.js"></script>
+    <script src="scripts/RemoteFinderWindow.es6.js"></script>
+    
+    <link rel="stylesheet" href="styles/property-grid.css" />
+    <script src="scripts/Reflection.es6.js"></script>
+    <script src="scripts/PropertyGrid.es6.js"></script>
+</head>
+<body>
+    <div style="margin: 2em; height: 80%; display:flex; flex-direction: row; /*background-position: center center; background-image:url('images/zones.png'); background-position: -2482px -2362px;*/">
+        <fc-host style="width: 90%; background-color:rgba(255,255,255,0.8); border-right:none" id="host"
+                 fc-mode='design'
+                 fc-name="graph"
+                 
+                 fc-grid-size="5,5"
+                 fc-grid-color="#457da8"
+                 fc-connector-size="2"
+                 fc-connector-color="#457da8"
+                 fc-show-fps="false"
+             
+                 fc-builder="DirectedGraph"
+                 fc-interaction="DirectedGraph"
+                 
+                 fc-storage-load-url="filesystem.json">
+        </fc-host>
+        
+         <pg-grid style="flex-grow: 1; width:500px" 
+                 id="pgrid"
+                 pg-source='#host' 
+                 pg-group-properties='true'
+                 pg-group-exclude="Node,Element"></pg-grid>
+    </div>
+
+    <button onclick="javascript:document.querySelector('fc-host').clear()" style="padding:1em; margin:auto; display:block">Clear</button>
+
+    <script>
+        'use strict';
+        
+        // bind changes triggered from the host to update what's displayed in the property grid
+        let observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function (mutation) {
+                if(!mutation.target || mutation.target.classList.contains('root')) return;
+                            
+                if(mutation.attributeName === 'action' && (mutation.oldValue === 'initializing' || mutation.oldValue === 'selecting' || mutation.oldValue === 'dragging')) {
+                    let grid = document.getElementById('pgrid');
+                    let host = document.getElementById('host');
+                    let firstSelectedElement = host.querySelector('.selected');
+                    
+                    grid.source = firstSelectedElement || host;
+                }
+            });
+        });
+        
+        observer.observe(document.getElementById('host'), { attributes: true, attributeFilter: ['action'], attributeOldValue: true, childList: true, subtree:true });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,70 @@
+<html>
+<head>
+    <link rel="stylesheet" href="styles/flow-chain-etl.css" />
+    
+    <script src="scripts/Geometry.es6.js"></script>
+    <script src="scripts/FlowChainElement.es6.js"></script>
+    <script src="scripts/FlowChainGroup.es6.js"></script>
+    <script src="scripts/FlowChainHostManager.es6.js"></script>
+    <script src="scripts/FlowChainHostElementLifecycleManager.es6.js"></script>
+    <script src="scripts/FlowChainHostDraggableManager.es6.js"></script>
+    <script src="scripts/FlowChainHostLinkableManager.es6.js"></script>
+    <script src="scripts/FlowChainHostSizableManager.es6.js"></script>
+    <script src="scripts/FlowChainHostSelectionManager.es6.js"></script>
+    <script src="scripts/FlowChainHostInteractionManager.es6.js"></script>
+    <script src="scripts/FlowChainHostLinkRenderer.es6.js"></script>
+    <script src="scripts/FlowChainHostLayoutManager.es6.js"></script>
+    <script src="scripts/FlowChainElementBuilder.es6.js"></script>
+    <script src="scripts/FlowChainHostStorageManager.es6.js"></script>
+    <script src="scripts/EtlCsvImporterElement.es6.js"></script>
+    <script src="scripts/EtlCsvExporterElement.es6.js"></script>
+    <script src="scripts/EtlMapperElement.es6.js"></script>
+    <script src="scripts/EtlMergerElement.es6.js"></script>
+    <script src="scripts/EtlFilterElement.es6.js"></script>
+    <script src="scripts/EtlScriptElement.es6.js"></script>
+    <script src="scripts/EtlElementBuilder.es6.js"></script>
+    <script src="scripts/FlowChainHostElement.es6.js"></script>
+    
+    <link rel="stylesheet" href="styles/remote-finder.css" />
+    
+    <script src="scripts/Ajax.es6.js"></script>
+    <script src="scripts/RemoteFinderWindow.es6.js"></script>
+    
+    <link rel="stylesheet" href="styles/property-grid.css" />
+    <script src="scripts/Reflection.es6.js"></script>
+    <script src="scripts/PropertyGrid.es6.js"></script>
+    
+    <link rel="stylesheet" href="styles/etl.html.css" />
+    <script src="scripts/etl.html.es6.js"></script>
+</head>
+<body>
+    <div class="container">
+        
+        <fc-host id="host"
+                 fc-mode="design"
+                 fc-name="etl"
+                 
+                 fc-grid-snap="true"
+                 fc-grid-show="false"
+                 fc-grid-size="5,5"
+                 fc-connector-size="2"
+                 fc-connector-color="#a0a0a0"
+                 fc-show-fps="false"
+                 
+                 fc-builder="Etl"
+                 
+                 fc-storage-load-url="filesystem.json"
+                 fc-storage-save-url="http://localhost:8080/save.svc">
+        </fc-host>
+        
+        <pg-grid id="pgrid"
+                 pg-source='#host' 
+                 pg-group-properties='true'
+                 pg-group-exclude="HTMLElement,Element,Node,Object">
+        </pg-grid>
+        
+    </div>
+
+    <button>Clear</button>
+</body>
+</html>

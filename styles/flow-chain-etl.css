@@ -1,0 +1,2207 @@
+/********** Base classes and mixins **********/
+.fc-host {
+  position: relative;
+  border: 1px dashed #a0a0a0;
+  min-height: 100px;
+  min-width: 100px;
+  display: block;
+  overflow: auto;
+  background: #f0f0f0;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.fc-host::shadow canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.fc-host * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.fc-element {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+}
+.fc-element:active,
+.fc-element:focus,
+.fc-element:hover {
+  z-index: 99999;
+}
+.fc-group {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 64px;
+  min-width: 64px;
+  width: 64px;
+  height: 64px;
+  outline: none;
+  z-index: 0;
+}
+.fc-group:hover:not(.root) {
+  z-index: 99999;
+}
+.fc-host .root {
+  position: absolute;
+  display: inline-block;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  outline: none;
+}
+/** Deletable **/
+.fc-element.deletable > .delete-button,
+.fc-group.deletable > .delete-button,
+.fc-element.deletable::shadow .delete-button,
+.fc-group.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+/** Draggable **/
+.dragging {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+.fc-host[action='dragging'] * {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+.fc-element.draggable,
+.fc-group.draggable {
+  will-change: top, left;
+}
+.fc-element.draggable > .drag-handle,
+.fc-group.draggable > .drag-handle,
+.fc-element.draggable::shadow .drag-handle,
+.fc-group.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.fc-element.draggable.dragging,
+.fc-group.draggable.dragging,
+.fc-element.draggable:active,
+.fc-group.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+.fc-element.draggable.dragging > .drag-handle,
+.fc-group.draggable.dragging > .drag-handle,
+.fc-element.draggable:active > .drag-handle,
+.fc-group.draggable:active > .drag-handle,
+.fc-element.draggable.dragging::shadow .drag-handle,
+.fc-group.draggable.dragging::shadow .drag-handle,
+.fc-element.draggable:active::shadow .drag-handle,
+.fc-group.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+/** Linkable **/
+.link-pointer {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.1;
+  z-index: -1;
+  will-change: top, left;
+}
+.fc-host[action='linking'] *,
+.fc-host[action='linking'] .drag-handle {
+  cursor: default;
+}
+.fc-element.linkable > .delete-link,
+.fc-group.linkable > .delete-link,
+.fc-element.linkable::shadow .delete-link,
+.fc-group.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+.fc-element.linkable > .delete-link:hover,
+.fc-group.linkable > .delete-link:hover,
+.fc-element.linkable::shadow .delete-link:hover,
+.fc-group.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+/** Sizable **/
+.north-cursor {
+  cursor: n-resize;
+}
+.north-east-cursor {
+  cursor: ne-resize;
+}
+.north-west-cursor {
+  cursor: nw-resize;
+}
+.south-cursor {
+  cursor: s-resize;
+}
+.south-east-cursor {
+  cursor: se-resize;
+}
+.south-west-cursor {
+  cursor: sw-resize;
+}
+.east-cursor {
+  cursor: e-resize;
+}
+.west-cursor {
+  cursor: w-resize;
+}
+.fc-host[action='sizing n'] {
+  cursor: n-resize;
+}
+.fc-host[action='sizing n'] .sizable.sizing {
+  cursor: n-resize;
+}
+.fc-host[action="sizing ne"] {
+  cursor: ne-resize;
+}
+.fc-host[action="sizing ne"] .sizable.sizing {
+  cursor: ne-resize;
+}
+.fc-host[action="sizing nw"] {
+  cursor: nw-resize;
+}
+.fc-host[action="sizing nw"] .sizable.sizing {
+  cursor: nw-resize;
+}
+.fc-host[action="sizing s"] {
+  cursor: s-resize;
+}
+.fc-host[action="sizing s"] .sizable.sizing {
+  cursor: s-resize;
+}
+.fc-host[action="sizing se"] {
+  cursor: se-resize;
+}
+.fc-host[action="sizing se"] .sizable.sizing {
+  cursor: se-resize;
+}
+.fc-host[action="sizing sw"] {
+  cursor: sw-resize;
+}
+.fc-host[action="sizing sw"] .sizable.sizing {
+  cursor: sw-resize;
+}
+.fc-host[action="sizing e"] {
+  cursor: e-resize;
+}
+.fc-host[action="sizing e"] .sizable.sizing {
+  cursor: e-resize;
+}
+.fc-host[action="sizing w"] {
+  cursor: w-resize;
+}
+.fc-host[action="sizing w"] .sizable.sizing {
+  cursor: w-resize;
+}
+.fc-element.sizable,
+.fc-group.sizable {
+  will-change: width, height;
+}
+.fc-element.sizable > .size-handle,
+.fc-group.sizable > .size-handle,
+.fc-element.sizable::shadow .size-handle,
+.fc-group.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+.fc-element.sizable > .size-handle.n,
+.fc-group.sizable > .size-handle.n,
+.fc-element.sizable::shadow .size-handle.n,
+.fc-group.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.ne,
+.fc-group.sizable > .size-handle.ne,
+.fc-element.sizable::shadow .size-handle.ne,
+.fc-group.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.nw,
+.fc-group.sizable > .size-handle.nw,
+.fc-element.sizable::shadow .size-handle.nw,
+.fc-group.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.s,
+.fc-group.sizable > .size-handle.s,
+.fc-element.sizable::shadow .size-handle.s,
+.fc-group.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.se,
+.fc-group.sizable > .size-handle.se,
+.fc-element.sizable::shadow .size-handle.se,
+.fc-group.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.sw,
+.fc-group.sizable > .size-handle.sw,
+.fc-element.sizable::shadow .size-handle.sw,
+.fc-group.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+.fc-element.sizable > .size-handle.e,
+.fc-group.sizable > .size-handle.e,
+.fc-element.sizable::shadow .size-handle.e,
+.fc-group.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+.fc-element.sizable > .size-handle.w,
+.fc-group.sizable > .size-handle.w,
+.fc-element.sizable::shadow .size-handle.w,
+.fc-group.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+/** Storage **/
+.storage-bar {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  display: inline-block;
+  min-width: 42px;
+  min-height: 42px;
+  overflow: hidden;
+}
+.storage-bar .storage-button {
+  position: relative;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0.5em;
+  cursor: pointer;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  overflow: hidden;
+  z-index: 9999;
+}
+.storage-bar .storage-button:hover {
+  opacity: 1;
+}
+.storage-bar .storage-button.download {
+  background-image: url('../images/icon-download.png');
+}
+.storage-bar .storage-button.upload {
+  background-image: url('../images/icon-upload.png');
+}
+.storage-bar .storage-button.upload input[type="file"] {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.storage-bar .storage-button.load {
+  background-image: url('../images/icon-cloud-upload.png');
+  background-size: 110%;
+}
+.storage-bar .storage-button.save {
+  background-image: url('../images/icon-cloud-download.png');
+  background-size: 110%;
+}
+.fc-host > .storage-bar,
+.fc-host::shadow .storage-bar {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  display: inline-block;
+  min-width: 42px;
+  min-height: 42px;
+  overflow: hidden;
+}
+.fc-host > .storage-bar .storage-button,
+.fc-host::shadow .storage-bar .storage-button {
+  position: relative;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0.5em;
+  cursor: pointer;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  overflow: hidden;
+  z-index: 9999;
+}
+.fc-host > .storage-bar .storage-button:hover,
+.fc-host::shadow .storage-bar .storage-button:hover {
+  opacity: 1;
+}
+.fc-host > .storage-bar .storage-button.download,
+.fc-host::shadow .storage-bar .storage-button.download {
+  background-image: url('../images/icon-download.png');
+}
+.fc-host > .storage-bar .storage-button.upload,
+.fc-host::shadow .storage-bar .storage-button.upload {
+  background-image: url('../images/icon-upload.png');
+}
+.fc-host > .storage-bar .storage-button.upload input[type="file"],
+.fc-host::shadow .storage-bar .storage-button.upload input[type="file"] {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.fc-host > .storage-bar .storage-button.load,
+.fc-host::shadow .storage-bar .storage-button.load {
+  background-image: url('../images/icon-cloud-upload.png');
+  background-size: 110%;
+}
+.fc-host > .storage-bar .storage-button.save,
+.fc-host::shadow .storage-bar .storage-button.save {
+  background-image: url('../images/icon-cloud-download.png');
+  background-size: 110%;
+}
+/** Selection **/
+.selector {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  min-width: 2px;
+  min-height: 2px;
+  border: 1px solid #457da8;
+  pointer-events: none;
+  transition-delay: 2s;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  will-change: width, height;
+}
+.fc-host > .selector,
+.fc-host::shadow .selector {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  min-width: 2px;
+  min-height: 2px;
+  border: 1px solid #457da8;
+  pointer-events: none;
+  transition-delay: 2s;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  will-change: width, height;
+}
+.fc-host[action="selecting"]::shadow .selector {
+  display: block;
+  opacity: 1;
+}
+/********** ETL classes **********/
+fc-host {
+  position: relative;
+  border: 1px dashed #a0a0a0;
+  min-height: 100px;
+  min-width: 100px;
+  display: block;
+  overflow: auto;
+  background: #f0f0f0;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-style: solid;
+}
+fc-host::shadow canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+fc-host * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+fc-host .root {
+  position: absolute;
+  display: inline-block;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  outline: none;
+}
+fc-host[action='dragging'] * {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+fc-host[action='linking'] *,
+fc-host[action='linking'] .drag-handle {
+  cursor: default;
+}
+fc-host[action='sizing n'] {
+  cursor: n-resize;
+}
+fc-host[action='sizing n'] .sizable.sizing {
+  cursor: n-resize;
+}
+fc-host[action="sizing ne"] {
+  cursor: ne-resize;
+}
+fc-host[action="sizing ne"] .sizable.sizing {
+  cursor: ne-resize;
+}
+fc-host[action="sizing nw"] {
+  cursor: nw-resize;
+}
+fc-host[action="sizing nw"] .sizable.sizing {
+  cursor: nw-resize;
+}
+fc-host[action="sizing s"] {
+  cursor: s-resize;
+}
+fc-host[action="sizing s"] .sizable.sizing {
+  cursor: s-resize;
+}
+fc-host[action="sizing se"] {
+  cursor: se-resize;
+}
+fc-host[action="sizing se"] .sizable.sizing {
+  cursor: se-resize;
+}
+fc-host[action="sizing sw"] {
+  cursor: sw-resize;
+}
+fc-host[action="sizing sw"] .sizable.sizing {
+  cursor: sw-resize;
+}
+fc-host[action="sizing e"] {
+  cursor: e-resize;
+}
+fc-host[action="sizing e"] .sizable.sizing {
+  cursor: e-resize;
+}
+fc-host[action="sizing w"] {
+  cursor: w-resize;
+}
+fc-host[action="sizing w"] .sizable.sizing {
+  cursor: w-resize;
+}
+fc-host > .storage-bar,
+fc-host::shadow .storage-bar {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  display: inline-block;
+  min-width: 42px;
+  min-height: 42px;
+  overflow: hidden;
+}
+fc-host > .storage-bar .storage-button,
+fc-host::shadow .storage-bar .storage-button {
+  position: relative;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0.5em;
+  cursor: pointer;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  overflow: hidden;
+  z-index: 9999;
+}
+fc-host > .storage-bar .storage-button:hover,
+fc-host::shadow .storage-bar .storage-button:hover {
+  opacity: 1;
+}
+fc-host > .storage-bar .storage-button.download,
+fc-host::shadow .storage-bar .storage-button.download {
+  background-image: url('../images/icon-download.png');
+}
+fc-host > .storage-bar .storage-button.upload,
+fc-host::shadow .storage-bar .storage-button.upload {
+  background-image: url('../images/icon-upload.png');
+}
+fc-host > .storage-bar .storage-button.upload input[type="file"],
+fc-host::shadow .storage-bar .storage-button.upload input[type="file"] {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+fc-host > .storage-bar .storage-button.load,
+fc-host::shadow .storage-bar .storage-button.load {
+  background-image: url('../images/icon-cloud-upload.png');
+  background-size: 110%;
+}
+fc-host > .storage-bar .storage-button.save,
+fc-host::shadow .storage-bar .storage-button.save {
+  background-image: url('../images/icon-cloud-download.png');
+  background-size: 110%;
+}
+fc-host > .selector,
+fc-host::shadow .selector {
+  position: absolute;
+  display: none;
+  opacity: 0;
+  min-width: 2px;
+  min-height: 2px;
+  border: 1px solid #457da8;
+  pointer-events: none;
+  transition-delay: 2s;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  will-change: width, height;
+}
+fc-host[action="selecting"]::shadow .selector {
+  display: block;
+  opacity: 1;
+}
+fc-host[action='linking'] {
+  cursor: url('../images/icon-link.png') 12 12, default;
+}
+fc-host[action='linking'] * {
+  cursor: url('../images/icon-link.png') 12 12, default;
+}
+fc-host[action='linking'] etl-csv-importer.linking,
+fc-host[action='linking'] etl-csv-exporter.linking,
+fc-host[action='linking'] etl-filter.linking,
+fc-host[action='linking'] etl-merger.linking,
+fc-host[action='linking'] etl-script.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+}
+fc-host[action='linking'] etl-csv-importer:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-csv-exporter:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-filter:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-merger:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-script:not(.linking):not(.already-linked):not(.not-allowed) {
+  box-shadow: 0 0 4px 2px #ff6600;
+}
+fc-host[action='linking'] etl-csv-importer:hover:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-csv-exporter:hover:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-filter:hover:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-merger:hover:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-script:hover:not(.linking):not(.already-linked):not(.not-allowed),
+fc-host[action='linking'] etl-csv-importer.linked:not(.linking):not(.already-linked),
+fc-host[action='linking'] etl-csv-exporter.linked:not(.linking):not(.already-linked),
+fc-host[action='linking'] etl-filter.linked:not(.linking):not(.already-linked),
+fc-host[action='linking'] etl-merger.linked:not(.linking):not(.already-linked),
+fc-host[action='linking'] etl-script.linked:not(.linking):not(.already-linked) {
+  box-shadow: 0 0 4px 2px #00AD98;
+  cursor: url('../images/icon-linked.png') 12 12, default;
+}
+fc-host[action='linking'] etl-csv-importer:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+fc-host[action='linking'] etl-csv-exporter:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+fc-host[action='linking'] etl-filter:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+fc-host[action='linking'] etl-merger:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+fc-host[action='linking'] etl-script:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+fc-host[action='linking'] etl-csv-importer.linked:not(.linking):not(.already-linked) > .drag-handle,
+fc-host[action='linking'] etl-csv-exporter.linked:not(.linking):not(.already-linked) > .drag-handle,
+fc-host[action='linking'] etl-filter.linked:not(.linking):not(.already-linked) > .drag-handle,
+fc-host[action='linking'] etl-merger.linked:not(.linking):not(.already-linked) > .drag-handle,
+fc-host[action='linking'] etl-script.linked:not(.linking):not(.already-linked) > .drag-handle,
+fc-host[action='linking'] etl-csv-importer:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+fc-host[action='linking'] etl-csv-exporter:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+fc-host[action='linking'] etl-filter:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+fc-host[action='linking'] etl-merger:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+fc-host[action='linking'] etl-script:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+fc-host[action='linking'] etl-csv-importer.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+fc-host[action='linking'] etl-csv-exporter.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+fc-host[action='linking'] etl-filter.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+fc-host[action='linking'] etl-merger.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+fc-host[action='linking'] etl-script.linked:not(.linking):not(.already-linked)::shadow .drag-handle {
+  cursor: url('../images/icon-linked.png') 12 12, default;
+}
+fc-host[action='linking'] etl-csv-importer.already-linked,
+fc-host[action='linking'] etl-csv-exporter.already-linked,
+fc-host[action='linking'] etl-filter.already-linked,
+fc-host[action='linking'] etl-merger.already-linked,
+fc-host[action='linking'] etl-script.already-linked,
+fc-host[action='linking'] etl-csv-importer.not-allowed,
+fc-host[action='linking'] etl-csv-exporter.not-allowed,
+fc-host[action='linking'] etl-filter.not-allowed,
+fc-host[action='linking'] etl-merger.not-allowed,
+fc-host[action='linking'] etl-script.not-allowed {
+  box-shadow: none;
+  cursor: url('../images/icon-forbidden.png') 12 12, default;
+}
+fc-host[action='linking'] etl-csv-importer.already-linked > .drag-handle,
+fc-host[action='linking'] etl-csv-exporter.already-linked > .drag-handle,
+fc-host[action='linking'] etl-filter.already-linked > .drag-handle,
+fc-host[action='linking'] etl-merger.already-linked > .drag-handle,
+fc-host[action='linking'] etl-script.already-linked > .drag-handle,
+fc-host[action='linking'] etl-csv-importer.not-allowed > .drag-handle,
+fc-host[action='linking'] etl-csv-exporter.not-allowed > .drag-handle,
+fc-host[action='linking'] etl-filter.not-allowed > .drag-handle,
+fc-host[action='linking'] etl-merger.not-allowed > .drag-handle,
+fc-host[action='linking'] etl-script.not-allowed > .drag-handle,
+fc-host[action='linking'] etl-csv-importer.already-linked::shadow .drag-handle,
+fc-host[action='linking'] etl-csv-exporter.already-linked::shadow .drag-handle,
+fc-host[action='linking'] etl-filter.already-linked::shadow .drag-handle,
+fc-host[action='linking'] etl-merger.already-linked::shadow .drag-handle,
+fc-host[action='linking'] etl-script.already-linked::shadow .drag-handle,
+fc-host[action='linking'] etl-csv-importer.not-allowed::shadow .drag-handle,
+fc-host[action='linking'] etl-csv-exporter.not-allowed::shadow .drag-handle,
+fc-host[action='linking'] etl-filter.not-allowed::shadow .drag-handle,
+fc-host[action='linking'] etl-merger.not-allowed::shadow .drag-handle,
+fc-host[action='linking'] etl-script.not-allowed::shadow .drag-handle {
+  cursor: url('../images/icon-forbidden.png') 12 12, default;
+}
+fc-host > .selector,
+fc-host::shadow .selector {
+  background-color: rgba(0, 122, 204, 0.2);
+  border-color: #007acc;
+}
+fc-host:not([fc-mode='design']) etl-csv-importer.deletable > .delete-button,
+fc-host:not([fc-mode='design']) etl-csv-exporter.deletable > .delete-button,
+fc-host:not([fc-mode='design']) etl-filter.deletable > .delete-button,
+fc-host:not([fc-mode='design']) etl-merger.deletable > .delete-button,
+fc-host:not([fc-mode='design']) etl-script.deletable > .delete-button,
+fc-host:not([fc-mode='design']) etl-csv-importer.deletable::shadow .delete-button,
+fc-host:not([fc-mode='design']) etl-csv-exporter.deletable::shadow .delete-button,
+fc-host:not([fc-mode='design']) etl-filter.deletable::shadow .delete-button,
+fc-host:not([fc-mode='design']) etl-merger.deletable::shadow .delete-button,
+fc-host:not([fc-mode='design']) etl-script.deletable::shadow .delete-button {
+  display: none;
+}
+fc-host:not([fc-mode='design']) etl-csv-importer.draggable > .drag-handle,
+fc-host:not([fc-mode='design']) etl-csv-exporter.draggable > .drag-handle,
+fc-host:not([fc-mode='design']) etl-filter.draggable > .drag-handle,
+fc-host:not([fc-mode='design']) etl-merger.draggable > .drag-handle,
+fc-host:not([fc-mode='design']) etl-script.draggable > .drag-handle,
+fc-host:not([fc-mode='design']) etl-csv-importer.draggable::shadow .drag-handle,
+fc-host:not([fc-mode='design']) etl-csv-exporter.draggable::shadow .drag-handle,
+fc-host:not([fc-mode='design']) etl-filter.draggable::shadow .drag-handle,
+fc-host:not([fc-mode='design']) etl-merger.draggable::shadow .drag-handle,
+fc-host:not([fc-mode='design']) etl-script.draggable::shadow .drag-handle {
+  display: none;
+}
+fc-host:not([fc-mode='design']) etl-csv-importer.linkable,
+fc-host:not([fc-mode='design']) etl-csv-exporter.linkable,
+fc-host:not([fc-mode='design']) etl-filter.linkable,
+fc-host:not([fc-mode='design']) etl-merger.linkable,
+fc-host:not([fc-mode='design']) etl-script.linkable {
+  cursor: default;
+}
+fc-host:not([fc-mode='design']) etl-csv-importer.linkable > .delete-link,
+fc-host:not([fc-mode='design']) etl-csv-exporter.linkable > .delete-link,
+fc-host:not([fc-mode='design']) etl-filter.linkable > .delete-link,
+fc-host:not([fc-mode='design']) etl-merger.linkable > .delete-link,
+fc-host:not([fc-mode='design']) etl-script.linkable > .delete-link,
+fc-host:not([fc-mode='design']) etl-csv-importer.linkable::shadow .delete-link,
+fc-host:not([fc-mode='design']) etl-csv-exporter.linkable::shadow .delete-link,
+fc-host:not([fc-mode='design']) etl-filter.linkable::shadow .delete-link,
+fc-host:not([fc-mode='design']) etl-merger.linkable::shadow .delete-link,
+fc-host:not([fc-mode='design']) etl-script.linkable::shadow .delete-link {
+  display: none;
+}
+.etl-element {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  width: 64px;
+  height: 64px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+etl-csv-importer {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  width: 64px;
+  height: 64px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+  border-color: #4d94ff;
+  background-color: #80B3FF;
+}
+etl-csv-importer:active,
+etl-csv-importer:focus,
+etl-csv-importer:hover {
+  z-index: 99999;
+}
+etl-csv-importer.deletable > .delete-button,
+etl-csv-importer.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+etl-csv-importer.draggable {
+  will-change: top, left;
+}
+etl-csv-importer.draggable > .drag-handle,
+etl-csv-importer.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+etl-csv-importer.draggable.dragging,
+etl-csv-importer.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+etl-csv-importer.draggable.dragging > .drag-handle,
+etl-csv-importer.draggable:active > .drag-handle,
+etl-csv-importer.draggable.dragging::shadow .drag-handle,
+etl-csv-importer.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+etl-csv-importer.linkable > .delete-link,
+etl-csv-importer.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+etl-csv-importer.linkable > .delete-link:hover,
+etl-csv-importer.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-csv-importer.sizable {
+  will-change: width, height;
+}
+etl-csv-importer.sizable > .size-handle,
+etl-csv-importer.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+etl-csv-importer.sizable > .size-handle.n,
+etl-csv-importer.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-csv-importer.sizable > .size-handle.ne,
+etl-csv-importer.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-importer.sizable > .size-handle.nw,
+etl-csv-importer.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-importer.sizable > .size-handle.s,
+etl-csv-importer.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-csv-importer.sizable > .size-handle.se,
+etl-csv-importer.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-importer.sizable > .size-handle.sw,
+etl-csv-importer.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-importer.sizable > .size-handle.e,
+etl-csv-importer.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-csv-importer.sizable > .size-handle.w,
+etl-csv-importer.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-csv-importer.deletable > .delete-button,
+etl-csv-importer.deletable::shadow .delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+}
+etl-csv-importer.deletable > .delete-button:hover,
+etl-csv-importer.deletable::shadow .delete-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.7);
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-csv-importer.draggable > .drag-handle,
+etl-csv-importer.draggable::shadow .drag-handle {
+  display: block;
+  width: 48px;
+  height: 48px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+etl-csv-importer.draggable > .drag-handle:hover,
+etl-csv-importer.draggable::shadow .drag-handle:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-csv-importer.draggable.dragging > .drag-handle,
+etl-csv-importer.draggable.dragging::shadow .drag-handle {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-csv-importer.linkable {
+  cursor: url('../images/icon-link.png') 0 12, default;
+}
+etl-csv-importer.linkable > .delete-link,
+etl-csv-importer.linkable::shadow .delete-link {
+  opacity: 0.3;
+}
+etl-csv-importer.linkable > .delete-link:hover,
+etl-csv-importer.linkable::shadow .delete-link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+etl-csv-importer.linkable.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+  box-shadow: 0 0 4px 2px #80B3FF;
+}
+etl-csv-importer.linkable.linked {
+  box-shadow: 0 0 4px 2px #00cc66;
+}
+etl-csv-importer.selected:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-csv-importer:focus:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-csv-exporter {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  width: 64px;
+  height: 64px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+  border-color: #993333;
+  background-color: #bf4040;
+}
+etl-csv-exporter:active,
+etl-csv-exporter:focus,
+etl-csv-exporter:hover {
+  z-index: 99999;
+}
+etl-csv-exporter.deletable > .delete-button,
+etl-csv-exporter.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+etl-csv-exporter.draggable {
+  will-change: top, left;
+}
+etl-csv-exporter.draggable > .drag-handle,
+etl-csv-exporter.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+etl-csv-exporter.draggable.dragging,
+etl-csv-exporter.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+etl-csv-exporter.draggable.dragging > .drag-handle,
+etl-csv-exporter.draggable:active > .drag-handle,
+etl-csv-exporter.draggable.dragging::shadow .drag-handle,
+etl-csv-exporter.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+etl-csv-exporter.linkable > .delete-link,
+etl-csv-exporter.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+etl-csv-exporter.linkable > .delete-link:hover,
+etl-csv-exporter.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-csv-exporter.sizable {
+  will-change: width, height;
+}
+etl-csv-exporter.sizable > .size-handle,
+etl-csv-exporter.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+etl-csv-exporter.sizable > .size-handle.n,
+etl-csv-exporter.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-csv-exporter.sizable > .size-handle.ne,
+etl-csv-exporter.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-exporter.sizable > .size-handle.nw,
+etl-csv-exporter.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-exporter.sizable > .size-handle.s,
+etl-csv-exporter.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-csv-exporter.sizable > .size-handle.se,
+etl-csv-exporter.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-exporter.sizable > .size-handle.sw,
+etl-csv-exporter.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-csv-exporter.sizable > .size-handle.e,
+etl-csv-exporter.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-csv-exporter.sizable > .size-handle.w,
+etl-csv-exporter.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-csv-exporter.deletable > .delete-button,
+etl-csv-exporter.deletable::shadow .delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+}
+etl-csv-exporter.deletable > .delete-button:hover,
+etl-csv-exporter.deletable::shadow .delete-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.7);
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-csv-exporter.draggable > .drag-handle,
+etl-csv-exporter.draggable::shadow .drag-handle {
+  display: block;
+  width: 48px;
+  height: 48px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+etl-csv-exporter.draggable > .drag-handle:hover,
+etl-csv-exporter.draggable::shadow .drag-handle:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-csv-exporter.draggable.dragging > .drag-handle,
+etl-csv-exporter.draggable.dragging::shadow .drag-handle {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-csv-exporter.linkable {
+  cursor: url('../images/icon-link.png') 0 12, default;
+}
+etl-csv-exporter.linkable > .delete-link,
+etl-csv-exporter.linkable::shadow .delete-link {
+  opacity: 0.3;
+}
+etl-csv-exporter.linkable > .delete-link:hover,
+etl-csv-exporter.linkable::shadow .delete-link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+etl-csv-exporter.linkable.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+  box-shadow: 0 0 4px 2px #80B3FF;
+}
+etl-csv-exporter.linkable.linked {
+  box-shadow: 0 0 4px 2px #00cc66;
+}
+etl-csv-exporter.selected:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-csv-exporter:focus:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-filter {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  width: 64px;
+  height: 64px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+  border-color: #00804d;
+  background-color: #00e68a;
+}
+etl-filter:active,
+etl-filter:focus,
+etl-filter:hover {
+  z-index: 99999;
+}
+etl-filter.deletable > .delete-button,
+etl-filter.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+etl-filter.draggable {
+  will-change: top, left;
+}
+etl-filter.draggable > .drag-handle,
+etl-filter.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+etl-filter.draggable.dragging,
+etl-filter.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+etl-filter.draggable.dragging > .drag-handle,
+etl-filter.draggable:active > .drag-handle,
+etl-filter.draggable.dragging::shadow .drag-handle,
+etl-filter.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+etl-filter.linkable > .delete-link,
+etl-filter.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+etl-filter.linkable > .delete-link:hover,
+etl-filter.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-filter.sizable {
+  will-change: width, height;
+}
+etl-filter.sizable > .size-handle,
+etl-filter.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+etl-filter.sizable > .size-handle.n,
+etl-filter.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-filter.sizable > .size-handle.ne,
+etl-filter.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-filter.sizable > .size-handle.nw,
+etl-filter.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-filter.sizable > .size-handle.s,
+etl-filter.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-filter.sizable > .size-handle.se,
+etl-filter.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-filter.sizable > .size-handle.sw,
+etl-filter.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-filter.sizable > .size-handle.e,
+etl-filter.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-filter.sizable > .size-handle.w,
+etl-filter.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-filter.deletable > .delete-button,
+etl-filter.deletable::shadow .delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+}
+etl-filter.deletable > .delete-button:hover,
+etl-filter.deletable::shadow .delete-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.7);
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-filter.draggable > .drag-handle,
+etl-filter.draggable::shadow .drag-handle {
+  display: block;
+  width: 48px;
+  height: 48px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+etl-filter.draggable > .drag-handle:hover,
+etl-filter.draggable::shadow .drag-handle:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-filter.draggable.dragging > .drag-handle,
+etl-filter.draggable.dragging::shadow .drag-handle {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-filter.linkable {
+  cursor: url('../images/icon-link.png') 0 12, default;
+}
+etl-filter.linkable > .delete-link,
+etl-filter.linkable::shadow .delete-link {
+  opacity: 0.3;
+}
+etl-filter.linkable > .delete-link:hover,
+etl-filter.linkable::shadow .delete-link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+etl-filter.linkable.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+  box-shadow: 0 0 4px 2px #80B3FF;
+}
+etl-filter.linkable.linked {
+  box-shadow: 0 0 4px 2px #00cc66;
+}
+etl-filter.selected:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-filter:focus:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-merger {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  width: 64px;
+  height: 64px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+  border-color: #bf80ff;
+  background-color: #d9b3ff;
+}
+etl-merger:active,
+etl-merger:focus,
+etl-merger:hover {
+  z-index: 99999;
+}
+etl-merger.deletable > .delete-button,
+etl-merger.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+etl-merger.draggable {
+  will-change: top, left;
+}
+etl-merger.draggable > .drag-handle,
+etl-merger.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+etl-merger.draggable.dragging,
+etl-merger.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+etl-merger.draggable.dragging > .drag-handle,
+etl-merger.draggable:active > .drag-handle,
+etl-merger.draggable.dragging::shadow .drag-handle,
+etl-merger.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+etl-merger.linkable > .delete-link,
+etl-merger.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+etl-merger.linkable > .delete-link:hover,
+etl-merger.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-merger.sizable {
+  will-change: width, height;
+}
+etl-merger.sizable > .size-handle,
+etl-merger.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+etl-merger.sizable > .size-handle.n,
+etl-merger.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-merger.sizable > .size-handle.ne,
+etl-merger.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-merger.sizable > .size-handle.nw,
+etl-merger.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-merger.sizable > .size-handle.s,
+etl-merger.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-merger.sizable > .size-handle.se,
+etl-merger.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-merger.sizable > .size-handle.sw,
+etl-merger.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-merger.sizable > .size-handle.e,
+etl-merger.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-merger.sizable > .size-handle.w,
+etl-merger.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-merger.deletable > .delete-button,
+etl-merger.deletable::shadow .delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+}
+etl-merger.deletable > .delete-button:hover,
+etl-merger.deletable::shadow .delete-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.7);
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-merger.draggable > .drag-handle,
+etl-merger.draggable::shadow .drag-handle {
+  display: block;
+  width: 48px;
+  height: 48px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+etl-merger.draggable > .drag-handle:hover,
+etl-merger.draggable::shadow .drag-handle:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-merger.draggable.dragging > .drag-handle,
+etl-merger.draggable.dragging::shadow .drag-handle {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-merger.linkable {
+  cursor: url('../images/icon-link.png') 0 12, default;
+}
+etl-merger.linkable > .delete-link,
+etl-merger.linkable::shadow .delete-link {
+  opacity: 0.3;
+}
+etl-merger.linkable > .delete-link:hover,
+etl-merger.linkable::shadow .delete-link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+etl-merger.linkable.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+  box-shadow: 0 0 4px 2px #80B3FF;
+}
+etl-merger.linkable.linked {
+  box-shadow: 0 0 4px 2px #00cc66;
+}
+etl-merger.selected:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-merger:focus:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-script {
+  position: absolute;
+  border: 1px dashed #a0a0a0;
+  min-height: 32px;
+  min-width: 32px;
+  outline: none;
+  z-index: 1;
+  background: #fff;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  width: 64px;
+  height: 64px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+  border-color: #ffc34d;
+  background-color: #ffd480;
+}
+etl-script:active,
+etl-script:focus,
+etl-script:hover {
+  z-index: 99999;
+}
+etl-script.deletable > .delete-button,
+etl-script.deletable::shadow .delete-button {
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+etl-script.draggable {
+  will-change: top, left;
+}
+etl-script.draggable > .drag-handle,
+etl-script.draggable::shadow .drag-handle {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+etl-script.draggable.dragging,
+etl-script.draggable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  z-index: 9999;
+}
+etl-script.draggable.dragging > .drag-handle,
+etl-script.draggable:active > .drag-handle,
+etl-script.draggable.dragging::shadow .drag-handle,
+etl-script.draggable:active::shadow .drag-handle {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+etl-script.linkable > .delete-link,
+etl-script.linkable::shadow .delete-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+  will-change: top, left;
+}
+etl-script.linkable > .delete-link:hover,
+etl-script.linkable::shadow .delete-link:hover {
+  opacity: 1;
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-script.sizable {
+  will-change: width, height;
+}
+etl-script.sizable > .size-handle,
+etl-script.sizable::shadow .size-handle {
+  position: absolute;
+  z-index: 9999;
+}
+etl-script.sizable > .size-handle.n,
+etl-script.sizable::shadow .size-handle.n {
+  cursor: n-resize;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-script.sizable > .size-handle.ne,
+etl-script.sizable::shadow .size-handle.ne {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-script.sizable > .size-handle.nw,
+etl-script.sizable::shadow .size-handle.nw {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-script.sizable > .size-handle.s,
+etl-script.sizable::shadow .size-handle.s {
+  cursor: s-resize;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+}
+etl-script.sizable > .size-handle.se,
+etl-script.sizable::shadow .size-handle.se {
+  cursor: se-resize;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-script.sizable > .size-handle.sw,
+etl-script.sizable::shadow .size-handle.sw {
+  cursor: sw-resize;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+}
+etl-script.sizable > .size-handle.e,
+etl-script.sizable::shadow .size-handle.e {
+  cursor: e-resize;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-script.sizable > .size-handle.w,
+etl-script.sizable::shadow .size-handle.w {
+  cursor: w-resize;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+}
+etl-script.deletable > .delete-button,
+etl-script.deletable::shadow .delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+}
+etl-script.deletable > .delete-button:hover,
+etl-script.deletable::shadow .delete-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.7);
+  background-image: url('../images/icon-delete-red.png');
+}
+etl-script.draggable > .drag-handle,
+etl-script.draggable::shadow .drag-handle {
+  display: block;
+  width: 48px;
+  height: 48px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+etl-script.draggable > .drag-handle:hover,
+etl-script.draggable::shadow .drag-handle:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-script.draggable.dragging > .drag-handle,
+etl-script.draggable.dragging::shadow .drag-handle {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-script.linkable {
+  cursor: url('../images/icon-link.png') 0 12, default;
+}
+etl-script.linkable > .delete-link,
+etl-script.linkable::shadow .delete-link {
+  opacity: 0.3;
+}
+etl-script.linkable > .delete-link:hover,
+etl-script.linkable::shadow .delete-link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+etl-script.linkable.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+  box-shadow: 0 0 4px 2px #80B3FF;
+}
+etl-script.linkable.linked {
+  box-shadow: 0 0 4px 2px #00cc66;
+}
+etl-script.selected:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+etl-script:focus:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+/** Deletable **/
+.fc-element.deletable > .delete-button,
+.fc-group.deletable > .delete-button,
+.fc-element.deletable::shadow .delete-button,
+.fc-group.deletable::shadow .delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  background-image: url('../images/icon-delete.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  opacity: 0.3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: url('../images/icon-trash.png') 4 4, default;
+}
+.fc-element.deletable > .delete-button:hover,
+.fc-group.deletable > .delete-button:hover,
+.fc-element.deletable::shadow .delete-button:hover,
+.fc-group.deletable::shadow .delete-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.7);
+  background-image: url('../images/icon-delete-red.png');
+}
+/** Draggable **/
+.fc-element.draggable > .drag-handle,
+.fc-element.draggable::shadow .drag-handle {
+  display: block;
+  width: 48px;
+  height: 48px;
+  -moz-border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -o-border-radius: 10%;
+  border-radius: 10%;
+}
+.fc-element.draggable > .drag-handle:hover,
+.fc-element.draggable::shadow .drag-handle:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+.fc-element.draggable.dragging > .drag-handle,
+.fc-element.draggable.dragging::shadow .drag-handle {
+  background-color: rgba(255, 255, 255, 0);
+}
+etl-csv-importer.draggable.dragging {
+  box-shadow: 1px 1px 4px 2px rgba(128, 179, 255, 0.5);
+}
+etl-csv-exporter.draggable.dragging {
+  box-shadow: 1px 1px 4px 2px rgba(191, 64, 64, 0.5);
+}
+etl-filter.draggable.dragging {
+  box-shadow: 1px 1px 4px 2px rgba(0, 230, 138, 0.5);
+}
+etl-merger.draggable.dragging {
+  box-shadow: 1px 1px 4px 2px rgba(217, 179, 255, 0.5);
+}
+etl-script.draggable.dragging {
+  box-shadow: 1px 1px 4px 2px rgba(255, 212, 128, 0.5);
+}
+/** Linkable **/
+.fc-host[action='linking'] {
+  cursor: url('../images/icon-link.png') 12 12, default;
+}
+.fc-host[action='linking'] * {
+  cursor: url('../images/icon-link.png') 12 12, default;
+}
+.fc-host[action='linking'] etl-csv-importer.linking,
+.fc-host[action='linking'] etl-csv-exporter.linking,
+.fc-host[action='linking'] etl-filter.linking,
+.fc-host[action='linking'] etl-merger.linking,
+.fc-host[action='linking'] etl-script.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+}
+.fc-host[action='linking'] etl-csv-importer:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-csv-exporter:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-filter:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-merger:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-script:not(.linking):not(.already-linked):not(.not-allowed) {
+  box-shadow: 0 0 4px 2px #ff6600;
+}
+.fc-host[action='linking'] etl-csv-importer:hover:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-csv-exporter:hover:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-filter:hover:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-merger:hover:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-script:hover:not(.linking):not(.already-linked):not(.not-allowed),
+.fc-host[action='linking'] etl-csv-importer.linked:not(.linking):not(.already-linked),
+.fc-host[action='linking'] etl-csv-exporter.linked:not(.linking):not(.already-linked),
+.fc-host[action='linking'] etl-filter.linked:not(.linking):not(.already-linked),
+.fc-host[action='linking'] etl-merger.linked:not(.linking):not(.already-linked),
+.fc-host[action='linking'] etl-script.linked:not(.linking):not(.already-linked) {
+  box-shadow: 0 0 4px 2px #00AD98;
+  cursor: url('../images/icon-linked.png') 12 12, default;
+}
+.fc-host[action='linking'] etl-csv-importer:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+.fc-host[action='linking'] etl-filter:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+.fc-host[action='linking'] etl-merger:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+.fc-host[action='linking'] etl-script:hover:not(.linking):not(.already-linked):not(.not-allowed) > .drag-handle,
+.fc-host[action='linking'] etl-csv-importer.linked:not(.linking):not(.already-linked) > .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter.linked:not(.linking):not(.already-linked) > .drag-handle,
+.fc-host[action='linking'] etl-filter.linked:not(.linking):not(.already-linked) > .drag-handle,
+.fc-host[action='linking'] etl-merger.linked:not(.linking):not(.already-linked) > .drag-handle,
+.fc-host[action='linking'] etl-script.linked:not(.linking):not(.already-linked) > .drag-handle,
+.fc-host[action='linking'] etl-csv-importer:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+.fc-host[action='linking'] etl-filter:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+.fc-host[action='linking'] etl-merger:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+.fc-host[action='linking'] etl-script:hover:not(.linking):not(.already-linked):not(.not-allowed)::shadow .drag-handle,
+.fc-host[action='linking'] etl-csv-importer.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+.fc-host[action='linking'] etl-filter.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+.fc-host[action='linking'] etl-merger.linked:not(.linking):not(.already-linked)::shadow .drag-handle,
+.fc-host[action='linking'] etl-script.linked:not(.linking):not(.already-linked)::shadow .drag-handle {
+  cursor: url('../images/icon-linked.png') 12 12, default;
+}
+.fc-host[action='linking'] etl-csv-importer.already-linked,
+.fc-host[action='linking'] etl-csv-exporter.already-linked,
+.fc-host[action='linking'] etl-filter.already-linked,
+.fc-host[action='linking'] etl-merger.already-linked,
+.fc-host[action='linking'] etl-script.already-linked,
+.fc-host[action='linking'] etl-csv-importer.not-allowed,
+.fc-host[action='linking'] etl-csv-exporter.not-allowed,
+.fc-host[action='linking'] etl-filter.not-allowed,
+.fc-host[action='linking'] etl-merger.not-allowed,
+.fc-host[action='linking'] etl-script.not-allowed {
+  box-shadow: none;
+  cursor: url('../images/icon-forbidden.png') 12 12, default;
+}
+.fc-host[action='linking'] etl-csv-importer.already-linked > .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter.already-linked > .drag-handle,
+.fc-host[action='linking'] etl-filter.already-linked > .drag-handle,
+.fc-host[action='linking'] etl-merger.already-linked > .drag-handle,
+.fc-host[action='linking'] etl-script.already-linked > .drag-handle,
+.fc-host[action='linking'] etl-csv-importer.not-allowed > .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter.not-allowed > .drag-handle,
+.fc-host[action='linking'] etl-filter.not-allowed > .drag-handle,
+.fc-host[action='linking'] etl-merger.not-allowed > .drag-handle,
+.fc-host[action='linking'] etl-script.not-allowed > .drag-handle,
+.fc-host[action='linking'] etl-csv-importer.already-linked::shadow .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter.already-linked::shadow .drag-handle,
+.fc-host[action='linking'] etl-filter.already-linked::shadow .drag-handle,
+.fc-host[action='linking'] etl-merger.already-linked::shadow .drag-handle,
+.fc-host[action='linking'] etl-script.already-linked::shadow .drag-handle,
+.fc-host[action='linking'] etl-csv-importer.not-allowed::shadow .drag-handle,
+.fc-host[action='linking'] etl-csv-exporter.not-allowed::shadow .drag-handle,
+.fc-host[action='linking'] etl-filter.not-allowed::shadow .drag-handle,
+.fc-host[action='linking'] etl-merger.not-allowed::shadow .drag-handle,
+.fc-host[action='linking'] etl-script.not-allowed::shadow .drag-handle {
+  cursor: url('../images/icon-forbidden.png') 12 12, default;
+}
+.fc-element.linkable,
+.fc-group.linkable {
+  cursor: url('../images/icon-link.png') 0 12, default;
+}
+.fc-element.linkable > .delete-link,
+.fc-group.linkable > .delete-link,
+.fc-element.linkable::shadow .delete-link,
+.fc-group.linkable::shadow .delete-link {
+  opacity: 0.3;
+}
+.fc-element.linkable > .delete-link:hover,
+.fc-group.linkable > .delete-link:hover,
+.fc-element.linkable::shadow .delete-link:hover,
+.fc-group.linkable::shadow .delete-link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.fc-element.linkable.linking,
+.fc-group.linkable.linking {
+  cursor: url('../images/icon-link.png') 12 12, default;
+  box-shadow: 0 0 4px 2px #80B3FF;
+}
+.fc-element.linkable.linked,
+.fc-group.linkable.linked {
+  box-shadow: 0 0 4px 2px #00cc66;
+}
+/** Selection **/
+.fc-host > .selector,
+.fc-host::shadow .selector {
+  background-color: rgba(0, 122, 204, 0.2);
+  border-color: #007acc;
+}
+.fc-element.selected:not(.root),
+.fc-group.selected:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+.fc-element:focus:not(.root),
+.fc-group:focus:not(.root) {
+  box-shadow: 0 0 8px 1px #007acc;
+}
+/** Runtime / Design **/
+.fc-host:not([fc-mode='design']) etl-csv-importer.deletable > .delete-button,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.deletable > .delete-button,
+.fc-host:not([fc-mode='design']) etl-filter.deletable > .delete-button,
+.fc-host:not([fc-mode='design']) etl-merger.deletable > .delete-button,
+.fc-host:not([fc-mode='design']) etl-script.deletable > .delete-button,
+.fc-host:not([fc-mode='design']) etl-csv-importer.deletable::shadow .delete-button,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.deletable::shadow .delete-button,
+.fc-host:not([fc-mode='design']) etl-filter.deletable::shadow .delete-button,
+.fc-host:not([fc-mode='design']) etl-merger.deletable::shadow .delete-button,
+.fc-host:not([fc-mode='design']) etl-script.deletable::shadow .delete-button {
+  display: none;
+}
+.fc-host:not([fc-mode='design']) etl-csv-importer.draggable > .drag-handle,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.draggable > .drag-handle,
+.fc-host:not([fc-mode='design']) etl-filter.draggable > .drag-handle,
+.fc-host:not([fc-mode='design']) etl-merger.draggable > .drag-handle,
+.fc-host:not([fc-mode='design']) etl-script.draggable > .drag-handle,
+.fc-host:not([fc-mode='design']) etl-csv-importer.draggable::shadow .drag-handle,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.draggable::shadow .drag-handle,
+.fc-host:not([fc-mode='design']) etl-filter.draggable::shadow .drag-handle,
+.fc-host:not([fc-mode='design']) etl-merger.draggable::shadow .drag-handle,
+.fc-host:not([fc-mode='design']) etl-script.draggable::shadow .drag-handle {
+  display: none;
+}
+.fc-host:not([fc-mode='design']) etl-csv-importer.linkable,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.linkable,
+.fc-host:not([fc-mode='design']) etl-filter.linkable,
+.fc-host:not([fc-mode='design']) etl-merger.linkable,
+.fc-host:not([fc-mode='design']) etl-script.linkable {
+  cursor: default;
+}
+.fc-host:not([fc-mode='design']) etl-csv-importer.linkable > .delete-link,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.linkable > .delete-link,
+.fc-host:not([fc-mode='design']) etl-filter.linkable > .delete-link,
+.fc-host:not([fc-mode='design']) etl-merger.linkable > .delete-link,
+.fc-host:not([fc-mode='design']) etl-script.linkable > .delete-link,
+.fc-host:not([fc-mode='design']) etl-csv-importer.linkable::shadow .delete-link,
+.fc-host:not([fc-mode='design']) etl-csv-exporter.linkable::shadow .delete-link,
+.fc-host:not([fc-mode='design']) etl-filter.linkable::shadow .delete-link,
+.fc-host:not([fc-mode='design']) etl-merger.linkable::shadow .delete-link,
+.fc-host:not([fc-mode='design']) etl-script.linkable::shadow .delete-link {
+  display: none;
+}
+
+/*# sourceMappingURL=maps/flow-chain-etl.css.map */
